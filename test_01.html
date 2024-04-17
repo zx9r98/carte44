@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="https://cdn.maptiler.com/maplibre-gl-js/v1.13.0-rc.4/mapbox-gl.js"></script>
+    <link
+      href="https://cdn.maptiler.com/maplibre-gl-js/v1.13.0-rc.4/mapbox-gl.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      #map {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+
+    <script>
+      //Appel et configuration de la carte
+
+      var map = new mapboxgl.Map({
+        container: "map",
+        style:
+          "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json", //Fond de carte
+        zoom: 15.3, // Zoom
+        center: [-1.572, 47.218], // Centrage
+        pitch: 60, // Inclinaison
+        bearing: -50, // Rotation
+        minZoom: 14.5, // Zoom min
+      });
+	  //BATIMENTS EN 3D
+
+map.addSource("Batiments", {
+  type: "geojson",
+  data:
+    "https://github.com/zx9r98/carte44/blob/main/bati_nantes.geojson",
+});
+
+map.addLayer({
+  id: "Batiments",
+  type: "fill-extrusion",
+  source: "Batiments",
+  paint: {
+    "fill-extrusion-height": { type: "identity", property: "HAUTEUR" },
+    "fill-extrusion-color": {
+      property: "HAUTEUR",
+      stops: [
+        [5, "#1a9850"],
+        [7, "#91cf60"],
+        [9, "#d9ef8b"],
+        [12, "#ffffbf"],
+        [16, "#fee08b"],
+        [20, "#fc8d59"],
+        [30, "#d73027"],
+      ],
+    },
+    "fill-extrusion-opacity": 0.7,
+    "fill-extrusion-base": 0,
+  },
+});
+	  
+    </script>
+  </body>
+</html>
